@@ -15,11 +15,7 @@ BEGIN
             wh.*
         FROM
             workspace_hosts AS wh
-        LEFT JOIN
-            workspaces AS w ON ((w.workspace_host_id = wh.id) AND (w.state = 'launching' OR w.state = 'running'))
-        GROUP BY
-            wh.id
-        HAVING
+        WHERE
             (((wh.state = 'draining' OR wh.state = 'unhealthy') AND wh.load_count = 0) OR
             (wh.state = 'unhealthy' AND (now() - wh.unhealthy_at) > make_interval(secs => unhealthy_timeout_sec)) OR
             (wh.state = 'launching' AND (now() - wh.launched_at) > make_interval(secs => launch_timeout_sec)))
@@ -29,11 +25,8 @@ BEGIN
     UPDATE workspace_hosts AS wh
     SET state = 'terminating',
         state_changed_at = NOW()
-    WHERE EXISTS (
-        SELECT 1
-        FROM terminable_hosts AS th
-        WHERE wh.id = th.id
-    );
+    FROM terminable_hosts AS th
+    WHERE wh.id = th.id;
 
     -- Save our terminated hosts
     SELECT array_agg(th.instance_id)
