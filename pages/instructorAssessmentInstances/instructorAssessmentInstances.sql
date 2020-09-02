@@ -27,6 +27,7 @@ FROM
     LEFT JOIN enrollments AS e ON (e.user_id = u.user_id AND e.course_instance_id = a.course_instance_id)
 WHERE
     a.id = $assessment_id
+    AND (u.user_id IS NOT NULL OR gi.id IS NOT NULL)
 ORDER BY
     e.role DESC, u.uid, u.user_id, ai.number, ai.id;
 
