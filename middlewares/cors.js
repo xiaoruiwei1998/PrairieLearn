@@ -11,6 +11,9 @@ router.all('/*', function(req, res, next) {
     // disable all caching for all requests
     res.header('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate');
 
+    // don't allow PL to be embedded in iframes
+    res.header('X-Frame-Options', 'DENY');
+
     next();
 });
 

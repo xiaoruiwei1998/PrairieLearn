@@ -9,6 +9,7 @@ const cheerio = require('cheerio');
 const hash = require('crypto').createHash;
 const parse5 = require('parse5');
 const debug = require('debug')('prairielearn:' + path.basename(__filename, '.js'));
+const ejs = require('ejs');
 
 const schemas = require('../schemas');
 const config = require('../lib/config');
@@ -909,11 +910,6 @@ module.exports = {
                     module.exports.renderPanel('question', pc, variant, question, submission, course, locals, (err, ret_courseIssues, html, renderedElementNames, cacheHit) => {
                         if (ERR(err, callback)) return;
                         courseIssues.push(...ret_courseIssues);
-
-                        // Experimental: question in iframe
-                        html += '<script>console.log("in iframe"); console.log(window.top); console.log(window.parent);</script>'
-                        html = html.replace(/"/g, '&quot;');
-                        html = `<iframe srcdoc="${html}" sandbox="allow-scripts" style="width: 100%;" />`;
                         htmls.questionHtml = html;
                         panelCount++;
                         if (cacheHit) cacheHitCount++;
@@ -1076,6 +1072,40 @@ module.exports = {
                             ...scriptUrls.map((url) => `<script type="text/javascript" src="${url}"></script>`),
                         ];
                         htmls.extraHeadersHtml = headerHtmls.join('\n');
+                        callback(null);
+                    });
+                },
+                (callback) => {
+                    // Wrap user-generated HTML in an iframe
+                    // Experimental: question in iframe
+                    const templatePath = path.join(__dirname, '..', 'pages', 'partials', 'questionIframe.ejs');
+                    let questionHtml = htmls.questionHtml;
+                    // Testing isolation
+                    // questionHtml += '<script>console.log("in iframe"); console.log(window.top); console.log(window.parent);</script>';
+                    ejs.renderFile(templatePath, {
+                        ...locals,
+                        questionHtml,
+                        extraHeadersHtml: htmls.extraHeadersHtml,
+                    }, (err, iframeContents) => {
+                        if (ERR(err, callback)) return;
+                        iframeContents = iframeContents.replace(/"/g, '&quot;');
+                        htmls.questionHtml = `<script>
+                          window.addEventListener('message', (event) => {
+                            const questionIframe = document.querySelector('#question-iframe');
+                            const height = event.data.height;
+                            console.log('resized to height ' + height);
+                            questionIframe.style.height = height + 'px';
+                          }, false);
+                        </script>`;
+                        htmls.questionHtml += `<iframe srcdoc="${iframeContents}" sandbox="allow-scripts" style="width: 100%; border: 0;" id="question-iframe"></iframe>`;
+                        htmls.questionHtml += `<script>
+                          console.log('start resizing script');
+                          const questionIframe = document.querySelector('#question-iframe');
+                          console.log('in iframe resizing script');
+                          console.log(questionIframe);
+                          console.log('after questionIframe');
+                          // console.log(questionIframe.contentWindow.__height);
+                        </script>`;
                         callback(null);
                     });
                 },

@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+    <%- include('../partials/mathjax'); %>
+    <%- extraHeadersHtml %>
+  </head>
+  <body>
+    <div id="question-wrapper">
+      <%- questionHtml %>
+    </div>
+    <script>
+      const resizeObserver = new ResizeObserver(function (entries) {
+        const height = entries[0].contentRect.height;
+        console.log('resized');
+        window.parent.postMessage({
+          type: 'resize',
+          id: 'question-iframe',
+          height: height,
+        }, '*');
+      });
+      resizeObserver.observe(document.querySelector('#question-wrapper'));
+    </script>
+    <iframe src="http://localhost:3000/pl/course/1/course_admin/issues"></iframe>
+    <iframe src="https://prairielearn.engr.illinois.edu"></iframe>
+  </body>
+</html>
