@@ -909,6 +909,11 @@ module.exports = {
                     module.exports.renderPanel('question', pc, variant, question, submission, course, locals, (err, ret_courseIssues, html, renderedElementNames, cacheHit) => {
                         if (ERR(err, callback)) return;
                         courseIssues.push(...ret_courseIssues);
+
+                        // Experimental: question in iframe
+                        html += '<script>console.log("in iframe"); console.log(window.top); console.log(window.parent);</script>'
+                        html = html.replace(/"/g, '&quot;');
+                        html = `<iframe srcdoc="${html}" sandbox="allow-scripts" style="width: 100%;" />`;
                         htmls.questionHtml = html;
                         panelCount++;
                         if (cacheHit) cacheHitCount++;
