@@ -8,7 +8,9 @@
   </head>
   <body>
     <div id="question-wrapper">
-      <%- questionHtml %>
+      <div class="card-body">
+        <%- questionHtml %>
+      </div>
     </div>
     <script>
       const resizeObserver = new ResizeObserver(function (entries) {
@@ -22,7 +24,5 @@
       });
       resizeObserver.observe(document.querySelector('#question-wrapper'));
     </script>
-    <iframe src="http://localhost:3000/pl/course/1/course_admin/issues"></iframe>
-    <iframe src="https://prairielearn.engr.illinois.edu"></iframe>
   </body>
 </html>
