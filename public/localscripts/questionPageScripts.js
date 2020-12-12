@@ -46,6 +46,8 @@ function disableOnSubmit() {
 }
 
 $(document).ready(() => {
-    confirmOnUnload();
+    // Disabled temporarily to support rendering question content in iframes
+    // TODO: re-enable this
+    // confirmOnUnload();
     disableOnSubmit();
 });

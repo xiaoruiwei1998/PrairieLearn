@@ -7,7 +7,7 @@
       <div class="col d-flex justify-content-between">
         <span class="d-flex align-items-center">
           <% if (showSaveButton) { %>
-            <button class="btn btn-info question-save disable-on-submit order-2" name="__action" value="save">
+            <button id="save-submission" class="btn btn-info question-save disable-on-submit order-2" type="button">
               <% if (showGradeButton) { %>
                 Save only
               <% } else { %>
@@ -17,7 +17,7 @@
           <% } %>
           <% if (showGradeButton) { %>
               <% if (question_context == 'student_homework') { %>
-                  <button class="btn btn-primary question-grade disable-on-submit order-1 mr-1" name="__action" value="grade">Save & Grade
+                  <button id="grade-submission" class="btn btn-primary question-grade disable-on-submit order-1 mr-1" type="button">Save & Grade
                       <% if ((assessment_question.tries_per_variant - variant.num_tries) > 1) { %>
                           <span class="badge">
                               <%= String(assessment_question.tries_per_variant - variant.num_tries) %>
@@ -26,7 +26,7 @@
                       <% } %>
                   </button>
               <% } else { %>
-                  <button class="btn btn-primary question-grade disable-on-submit order-1 mr-1" name="__action" value="grade">Save & Grade</button>
+                  <button id="grade-submission" class="btn btn-primary question-grade disable-on-submit order-1 mr-1" type="button">Save & Grade</button>
               <% } %>
           <% } %>
           <% if (showManualGradingMsg) { %>
@@ -41,6 +41,50 @@
         </span>
       </div>
     </div>
+    <script>
+      const saveButton = document.querySelector('#save-submission');
+      const gradeButton = document.querySelector('#grade-submission');
+      const questionPanelFooter = document.querySelector('#question-panel-footer');
+      const questionForm = document.querySelector('#question-form');
+
+      console.log(saveButton);
+      console.log(gradeButton);
+
+      const addAction = (actionValue) => {
+        let action = document.createElement('input');
+        action.setAttribute('type', 'hidden');
+        action.setAttribute('name', '__action');
+        action.setAttribute('value', actionValue);
+        questionPanelFooter.appendChild(action);
+      }
+
+      // Prevent triggering another form submission after the button was clicked
+      // Necessary in case the submission process takes a while
+      let buttonClicked = false;
+
+      if (saveButton) {
+        saveButton.addEventListener('click', () => {
+          if (buttonClicked) return;
+          buttonClicked = true;
+
+          console.log('save clicked');
+
+          addAction('save');
+          //questionForm.submit();
+        });
+      }
+      if(gradeButton) {
+        gradeButton.addEventListener('click', () => {
+          if (buttonClicked) return;
+          buttonClicked = true;
+
+          console.log('grade clicked');
+
+          addAction('grade');
+          //questionForm.submit();
+        })
+      }
+    </script>
     <% } %>
   </div>
 <% } else { %>

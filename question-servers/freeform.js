@@ -1089,14 +1089,7 @@ module.exports = {
                     }, (err, iframeContents) => {
                         if (ERR(err, callback)) return;
                         iframeContents = iframeContents.replace(/"/g, '&quot;');
-                        htmls.questionHtml = `<script>
-                          window.addEventListener('message', (event) => {
-                            const questionIframe = document.querySelector('#question-iframe');
-                            const height = event.data.height;
-                            questionIframe.style.height = height + 'px';
-                          }, false);
-                        </script>`;
-                        htmls.questionHtml += `<iframe srcdoc="${iframeContents}" sandbox="allow-scripts" style="width: 100%; border: 0;" id="question-iframe"></iframe>`;
+                        htmls.questionHtml = `<iframe srcdoc="${iframeContents}" sandbox="allow-scripts" style="width: 100%; border: 0;" id="question-iframe"></iframe>`;
                         callback(null);
                     });
                 },
