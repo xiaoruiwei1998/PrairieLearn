@@ -1097,7 +1097,7 @@ module.exports = {
                             questionIframe.style.height = height + 'px';
                           }, false);
                         </script>`;
-                        htmls.questionHtml += `<iframe srcdoc="${iframeContents}" scrolling="no" sandbox="allow-scripts" style="width: 100%; border: 0;" id="question-iframe"></iframe>`;
+                        htmls.questionHtml += `<iframe srcdoc="${iframeContents}" sandbox="allow-scripts" style="width: 100%; border: 0;" id="question-iframe"></iframe>`;
                         htmls.questionHtml += `<script>
                           console.log('start resizing script');
                           const questionIframe = document.querySelector('#question-iframe');
