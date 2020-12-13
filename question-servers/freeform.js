@@ -1089,7 +1089,7 @@ module.exports = {
                     }, (err, iframeContents) => {
                         if (ERR(err, callback)) return;
                         iframeContents = iframeContents.replace(/"/g, '&quot;');
-                        htmls.questionHtml = `<iframe srcdoc="${iframeContents}" sandbox="allow-scripts" style="width: 100%; border: 0;" id="question-iframe"></iframe>`;
+                        htmls.questionHtml = iframeContents;
                         callback(null);
                     });
                 },
