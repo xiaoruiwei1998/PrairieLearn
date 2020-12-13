@@ -46,6 +46,7 @@
       const gradeButton = document.querySelector('#grade-submission');
       const questionPanelFooter = document.querySelector('#question-panel-footer');
       const questionForm = document.querySelector('#question-form');
+      const questionIframe = document.querySelector('#question-iframe');
 
       console.log(saveButton);
       console.log(gradeButton);
@@ -58,30 +59,62 @@
         questionPanelFooter.appendChild(action);
       }
 
+      const serializeInputs = async () => {
+        return new Promise((resolve, reject) => {
+          function receiveMessage(event) {
+            if (event.data.type === 'inputs_serialized') {
+              console.log(event.data);
+              // Put all the inputs into *our* DOM.
+              event.data.inputs.forEach(inputData => {
+                const tagName = inputData.tagName.toLowerCase();
+                if (tagName !== 'input' && tagName !== 'textarea') return;
+
+                let input = document.createElement(tagName);
+                if (inputData.name) input.setAttribute('name', inputData.name);
+                if (inputData.type) input.setAttribute('type', inputData.type);
+                if (inputData.value) input.setAttribute('value', inputData.value);
+                if (inputData.checked) input.setAttribute('checked', inputData.checked);
+                // TODO: are the any additional attributes that we need to take care of?
+                input.style.display = 'none';
+                questionPanelFooter.appendChild(input);
+              })
+              window.removeEventListener('message', receiveMessage);
+              resolve();
+            }
+          }
+          window.addEventListener('message', receiveMessage);
+          questionIframe.contentWindow.postMessage({
+            type: 'serialize_inputs',
+          }, '*');
+        })
+      }
+
       // Prevent triggering another form submission after the button was clicked
       // Necessary in case the submission process takes a while
       let buttonClicked = false;
 
       if (saveButton) {
-        saveButton.addEventListener('click', () => {
+        saveButton.addEventListener('click', async () => {
           if (buttonClicked) return;
           buttonClicked = true;
 
           console.log('save clicked');
 
           addAction('save');
-          //questionForm.submit();
+          await serializeInputs();
+          // questionForm.submit();
         });
       }
-      if(gradeButton) {
-        gradeButton.addEventListener('click', () => {
+      if (gradeButton) {
+        gradeButton.addEventListener('click', async () => {
           if (buttonClicked) return;
           buttonClicked = true;
 
           console.log('grade clicked');
 
           addAction('grade');
-          //questionForm.submit();
+          await serializeInputs();
+          // questionForm.submit();
         })
       }
     </script>

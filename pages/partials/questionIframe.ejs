@@ -23,6 +23,28 @@
         }, '*');
       });
       resizeObserver.observe(document.querySelector('#question-wrapper'));
+
+      window.addEventListener('message', (event) => {
+        if (event.data.type === 'serialize_inputs') {
+          const serializedInputs = [];
+          // TODO: are there more input types to worry about?
+          document.querySelectorAll(
+            '#question-wrapper input, #question-wrapper textarea'
+          ).forEach(input => {
+            serializedInputs.push({
+              tagName: input.tagName,
+              name: input.name,
+              type: input.type,
+              value: input.value,
+              checked: input.checked,
+            })
+          })
+          window.parent.postMessage({
+            type: 'inputs_serialized',
+            inputs: serializedInputs,
+          }, '*');
+        }
+      })
     </script>
   </body>
 </html>
