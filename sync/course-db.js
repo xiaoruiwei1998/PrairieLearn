@@ -20,7 +20,10 @@ const perf = require('./performance')('course-db');
 const chalk = new chalkDefault.constructor({ enabled: true, level: 3 });
 
 // We use a single global instance so that schemas aren't recompiled every time they're used
-const ajv = new Ajv({ allErrors: true });
+const ajv = new Ajv({
+    allErrors: true,
+    useDefaults: true,
+});
 
 const DEFAULT_QUESTION_INFO = {
     type: 'Calculation',
