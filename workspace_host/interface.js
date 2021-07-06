@@ -50,13 +50,6 @@ if (config.workspaceHostWatchJobFiles) {
     }, 1000);
 }
 
-setInterval(() => {
-    const elapsedSec = (Date.now() - lastPushAllTime) / 1000;
-    if (elapsedSec > 900) {
-        logger.error(`_pushAllRunningContainersToS3() has not run for ${elapsedSec} seconds`);
-    }
-}, 1000);
-
 const bodyParser = require('body-parser');
 const docker = new Docker();
 
@@ -294,14 +287,6 @@ async.series([
         setTimeout(autoUpdateJobManagerTimeout, config.workspaceHostFileWatchIntervalSec * 1000);
     },
     async () => {
-        /* Set up a periodic hard push of all containers to S3 */
-        async function pushAllContainersTimeout() {
-            await pushAllRunningContainersToS3();
-            setTimeout(pushAllContainersTimeout, config.workspaceHostForceUploadIntervalSec * 1000);
-        }
-        setTimeout(pushAllContainersTimeout, config.workspaceHostForceUploadIntervalSec * 1000);
-    },
-    async () => {
         /* Set up a periodic pruning of running containers */
         async function pruneContainersTimeout() {
             await pruneStoppedContainers();
@@ -381,22 +366,6 @@ async function pushContainerContentsToS3(workspace) {
         /* Ignore any errors that may occur when the directory doesn't exist */
         logger.error(`Error uploading directory: ${err}`);
     }
-}
-
-/**
- * Push the contents of all running workspaces to S3.  Workspace home directories are uploaded
- * serially instead of in parallel.
- */
-async function pushAllRunningContainersToS3() {
-    lastPushAllTime = Date.now();
-    const result = await sqldb.queryAsync(sql.get_running_workspaces, { instance_id: workspace_server_settings.instance_id });
-    await async.eachSeries(result.rows, async (ws) => {
-        if (ws.state == 'running' && ws.homedir_location == 'S3') {
-            logger.info(`Pushing entire running container to S3: workspace_id=${ws.id}, launch_uuid=${ws.launch_uuid}`);
-            await pushContainerContentsToS3(ws);
-            logger.info(`Completed push of entire running container to S3: workspace_id=${ws.id}, launch_uuid=${ws.launch_uuid}`);
-        }
-    });
 }
 
 /* Prune stopped and runaway containers */
