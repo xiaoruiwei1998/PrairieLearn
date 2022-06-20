@@ -1,0 +1,3 @@
+@prairielearn/html-ejs:build: cache hit, replaying output [2me2e7f363c90437a8[0m
+[34m@prairielearn/html-ejs:build: [0mwarning package.json: No license field
+[34m@prairielearn/html-ejs:build: [0m$ tsc
