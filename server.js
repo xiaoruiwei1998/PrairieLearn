@@ -780,6 +780,7 @@ module.exports.initExpress = function () {
       require('./pages/instructorAssessmentStatistics/instructorAssessmentStatistics'),
     ]
   );
+<<<<<<< HEAD
   // redirect to cheat detection page 
   app.use(
     '/pl/course_instance/:course_instance_id/instructor/assessment/:assessment_id/cheat_detection',
@@ -791,6 +792,8 @@ module.exports.initExpress = function () {
       require('./pages/instructorAssessmentCheatDetection/instructorAssessmentCheatDetection'),
     ]
   );
+=======
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
   app.use(
     '/pl/course_instance/:course_instance_id/instructor/assessment/:assessment_id/question_statistics',
     [

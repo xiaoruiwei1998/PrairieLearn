@@ -1,0 +1,90 @@
+# Development
+
+## Custom scripts
+/start-custom.sh
+
+## s3rver S3 emulation data directory
+/s3rver
+
+### https://docs.docker.com/compose/reference/#specifying-multiple-compose-files
+docker-compose.override.yml
+
+## Editors
+
+### JetBrains
+/.idea/
+
+.vscode
+.tmux.conf
+
+## Backup files
+
+### vi
+**/*.swp
+**/*.swo
+**/*~
+
+### emacs
+**/[#]*[#]
+
+### jupyter
+.ipynb_checkpoints
+
+## File explorers
+**/.DS_Store # OSX Finder
+
+# PrairieLearn
+
+## Config
+/config.json
+/aws-config.json
+
+## Dependencies
+node_modules
+
+## Generated HTML
+
+### mkdocs
+/site/
+
+### jsdoc
+/docs/code-docs/
+
+## Runtime artifacts
+
+### Logs
+/server.log
+
+### Code coverage
+/coverage/
+/.nyc_output/
+
+### Tests
+/tests/testFileEditor/courseLive/
+/tests/testFileEditor/courseOrigin/
+/tests/testFileEditor/courseDev/
+
+## Programming languages
+
+### Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+### R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+## macOS files
+.DS_Store
+
+## s3rver file store
+/s3rver
+
+## Turborepo caches
+.turbo
+
+## Compiled package files
+packages/*/dist

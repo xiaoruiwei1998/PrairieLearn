@@ -3,74 +3,132 @@
     urlSuffix:      '/assessment/'+assessment.id+'/access',
     iconClasses:    'far fa-calendar-alt',
     tabLabel:       'Access'}) %>
+<<<<<<< HEAD
     <% if (authz_data.has_course_instance_permission_view) { %>
         <%- include('navTab', {
+=======
+<% if (authz_data.has_course_instance_permission_view) { %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'downloads',
     urlSuffix:      '/assessment/'+assessment.id+'/downloads',
     iconClasses:    'fas fa-download',
     tabLabel:       'Downloads'}) %>
+<<<<<<< HEAD
             <% } %>
                 <% if (authz_data.has_course_permission_view) { %>
                     <%- include('navTab', {
+=======
+<% } %>
+<% if (authz_data.has_course_permission_view) { %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'file_view',
     urlSuffix:      '/assessment/'+assessment.id+'/file_view',
     iconClasses:    'fa fa-edit',
     tabLabel:       'Files'}) %>
+<<<<<<< HEAD
                         <% } %>
                             <% if (authz_data.has_course_instance_permission_view) { %>
                                 <%- include('navTab', {
+=======
+<% } %>
+<% if (authz_data.has_course_instance_permission_view) { %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'groups',
     urlSuffix:      '/assessment/'+assessment.id+'/groups',
     iconClasses:    'fas fa-users',
     tabLabel:       'Groups'}) %>
+<<<<<<< HEAD
                                     <% } %>
                                         <%- include('navTab', {
+=======
+<% } %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'questions',
     urlSuffix:      '/assessment/'+assessment.id+'/questions',
     iconClasses:    'far fa-file-alt',
     tabLabel:       'Questions'}) %>
+<<<<<<< HEAD
                                             <%- include('navTab', {
+=======
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'question_statistics',
     urlSuffix:      '/assessment/'+assessment.id+'/question_statistics',
     iconClasses:    'fas fa-table',
     tabLabel:       'Question stats'}) %>
+<<<<<<< HEAD
                                                 <% if (authz_data.has_course_instance_permission_view && course.manual_grading_visible) { %>
                                                     <%- include('navTab', {
+=======
+<% if (authz_data.has_course_instance_permission_view && course.manual_grading_visible) { %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'manual_grading',
     urlSuffix:      '/assessment/'+assessment.id+'/manual_grading',
     iconClasses:    'fas fa-marker',
     tabLabel:       'Manual Grading'}) %>
+<<<<<<< HEAD
                                                         <% } %>
                                                             <% if (authz_data.has_course_instance_permission_view) { %>
                                                                 <%- include('navTab', {
+=======
+<% } %>
+<% if (authz_data.has_course_instance_permission_view) { %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'regrading',
     urlSuffix:      '/assessment/'+assessment.id+'/regrading',
     iconClasses:    'fa fa-sync',
     tabLabel:       'Regrading'}) %>
+<<<<<<< HEAD
                                                                     <% } %>
                                                                         <%- include('navTab', {
+=======
+<% } %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'settings',
     urlSuffix:      '/assessment/'+assessment.id+'/settings',
     iconClasses:    'fas fa-cog',
     tabLabel:       'Settings'}) %>
+<<<<<<< HEAD
                                                                             <%- include('navTab', {
+=======
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'assessment_statistics',
     urlSuffix:      '/assessment/'+assessment.id+'/assessment_statistics',
     iconClasses:    'fas fa-chart-bar',
     tabLabel:       'Statistics'}) %>
+<<<<<<< HEAD
                                                                                 <% if (authz_data.has_course_instance_permission_view) { %>
                                                                                     <%- include('navTab', {
+=======
+<% if (authz_data.has_course_instance_permission_view) { %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'instances',
     urlSuffix:      '/assessment/'+assessment.id+'/instances',
     iconClasses:    'fas fa-user-graduate',
     tabLabel:       'Students'}) %>
+<<<<<<< HEAD
                                                                                         <% } %>
                                                                                             <% if (authz_data.has_course_instance_permission_view) { %>
                                                                                                 <%- include('navTab', {
+=======
+<% } %>
+<% if (authz_data.has_course_instance_permission_view) { %>
+<%- include('navTab', {
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
     activeSubPage:  'uploads',
     urlSuffix:      '/assessment/'+assessment.id+'/uploads',
     iconClasses:    'fas fa-upload',
     tabLabel:       'Uploads'}) %>
+<<<<<<< HEAD
                                                                                                     <% } %>
                                                                                                         <!-- <% if (authz_data.has_course_instance_permission_view) { %> -->
                                                                                                         <%- include('navTab', {
@@ -79,3 +137,6 @@
     iconClasses:    'fas fa-chart-bar',
     tabLabel:       'Cheat Detection'}) %>
                                                                                                             <% } %>
+=======
+<% } %>
+>>>>>>> 7fc4d73a9f18fe94b3d9c1ad3431faf595eacaaf
