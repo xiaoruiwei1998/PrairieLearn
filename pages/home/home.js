@@ -20,6 +20,8 @@ router.get('/', function (req, res, next) {
       if (ERR(err, next)) return;
 
       res.locals.instructor_courses = result.rows[0].instructor_courses;
+      console.log("debug: ")
+      console.log(res.locals.instructor_courses)
       if (res.locals.instructor_courses.length > 0 || config.devMode) {
         // If the list of instructor courses is non-empty, then prepend
         // with the list of example courses (otherwise, discard the list
