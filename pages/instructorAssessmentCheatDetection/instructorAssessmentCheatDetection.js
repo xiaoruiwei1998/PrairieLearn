@@ -20,9 +20,7 @@ const setFilenames = function (locals) {
     locals.course_instance,
     locals.course
   );
-  locals.scoreStatsCsvFilename = prefix + 'score_stats.csv';
-  locals.durationStatsCsvFilename = prefix + 'duration_stats.csv';
-  locals.statsByDateCsvFilename = prefix + 'scores_by_date.csv';
+  locals.cheatDetectionCsvFilename = prefix + 'cheat_detection.csv';
 };
 
 router.get('/', function (req, res, next) {
@@ -32,6 +30,25 @@ router.get('/', function (req, res, next) {
     [
       function (callback) {
         debug('query assessment_stats');
+        // calling python script
+        var util = require("util");
+        var spawn = require("child_process").spawn;
+        var pythonProcess = spawn('python3',["pages/instructorAssessmentCheatDetection/cheat-detection-py/main.py", 
+                                              '-d', 'pages/instructorAssessmentCheatDetection/cheat-detection-py/fa20E2cleanedOutput',
+                                              '-o', 'pages/instructorAssessmentCheatDetection/cheat-detection-py',
+                                              '-w1', '0.4',
+                                              '-w2', '0.3',
+                                              '-w3', '0.3']);
+        util.log('readingin')
+        util.log(pythonProcess)
+        pythonProcess.stdout.on('data', function(data) {
+          util.log(data.toString('utf8'));
+        });
+
+        pythonProcess.stderr.on('data', function(data) {
+          console.error(`stderr: ${data}`);
+        });
+        // from ruiwei
         var params = { assessment_id: res.locals.assessment.id };
         sqldb.queryOneRow(sql.assessment_stats, params, function (err, result) {
           if (ERR(err, callback)) return;
@@ -74,6 +91,7 @@ router.get('/', function (req, res, next) {
       res.render(__filename.replace(/\.js$/, '.ejs'), res.locals);
     }
   );
+
 });
 
 router.get('/:filename', function (req, res, next) {

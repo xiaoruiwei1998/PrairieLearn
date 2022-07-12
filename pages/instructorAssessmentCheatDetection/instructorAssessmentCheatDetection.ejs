@@ -53,11 +53,6 @@
             </tbody>
           </table>
         </div>
-        <div class="card-footer">
-          <small>
-            Download <a href="<%= urlPrefix %>/assessment/<%= assessment.id %>/assessment_statistics/<%= scoreStatsCsvFilename %>"><%= scoreStatsCsvFilename %></a>. Data outside of the plotted range is included in the last bin.
-          </small>
-        </div>
 
         <% } else { %>
 
@@ -100,11 +95,6 @@
               <tr><td>Maximum duration</td><td><%= duration_stat.max %></td></tr>
             </tbody>
           </table>
-        </div>
-        <div class="card-footer">
-          <small>
-            Download <a href="<%= urlPrefix %>/assessment/<%= assessment.id %>/assessment_statistics/<%= durationStatsCsvFilename %>"><%= durationStatsCsvFilename %></a>. Data outside of the plotted range is included in the last bin.
-          </small>
         </div>
 
         <% } else { %>
@@ -183,14 +173,6 @@
           </script>
         </div>
 
-        <div class="card-footer">
-          <small>
-            Download <a href="<%= urlPrefix %>/assessment/<%= assessment.id %>/assessment_statistics/<%= statsByDateCsvFilename %>"><%= statsByDateCsvFilename %></a>.
-            <br/>
-            Each day shows a histogram of the scores on this assessment for that day. The widths are scaled relative to the maximum value across all bins and days. The thick black horizontal lines are the mean scores for each day.
-          </small>
-        </div>
-
         <% } else { %>
 
         <div class="card-body">
@@ -199,6 +181,13 @@
 
         <% }%>
       </div>
+
+      <div class="card-footer">
+        <small>
+          Download <a href="<%= urlPrefix %>/assessment/<%= assessment.id %>/assessment_statistics/<%= cheatDetectionCsvFilename %>"><%= cheatDetectionCsvFilename %></a>.
+        </small>
+      </div>
+
 
     </div>
   </body>
