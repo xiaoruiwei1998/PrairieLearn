@@ -20,7 +20,7 @@
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <%= assessment_set.name %> <%= assessment.number %>: Score statistics
+          Overall Similarity
         </div>
         <% if (assessment_stat.number > 0) { %>
         <div class="card-body">
@@ -65,7 +65,7 @@
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <%= assessment_set.name %> <%= assessment.number %>: Duration statistics
+          Time Similarity
         </div>
 
         <% if (assessment_stat.number > 0) { %>
@@ -108,7 +108,7 @@
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <%= assessment_set.name %> <%= assessment.number %>: Duration versus score
+          Answer Similarity
         </div>
 
         <% if (assessment_stat.number > 0) { %>
@@ -147,7 +147,7 @@
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <%= assessment_set.name %> <%= assessment.number %>: Score statistics by date
+          Order Similarity
         </div>
 
         <% if (assessment_stat.number > 0) { %>
