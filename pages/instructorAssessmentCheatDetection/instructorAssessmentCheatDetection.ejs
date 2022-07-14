@@ -7,7 +7,12 @@
     <script src="<%= asset_path('localscripts/histogram.js') %>"></script>
     <script src="<%= asset_path('localscripts/scatter.js') %>"></script>
     <script src="<%= asset_path('localscripts/parallel_histograms.js') %>"></script>
+    <!-- Load Chart.js Library-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+    <!-- Load Papa Parse Library-->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   </head>
+
   <body>
     <script>
       $(function () {
@@ -24,6 +29,76 @@
         </div>
         <% if (assessment_stat.number > 0) { %>
         <div class="card-body">
+          <!-- Cheat Detection Overall Sim Chart-->
+          <div class="cd_chart" style="position: relative; height: 30vh; width: 60vw">
+            <canvas id="chart"></canvas>
+            <script>
+              graphIt();
+
+              async function graphIt() {
+                await getCsvData();
+                const ctx = document.getElementById('chart');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                        datasets: [{
+                            label: 'Overall Similarities',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            async function getCsvData() {
+              const overall_data = [];
+              const ys = [];
+
+              const csv = await fetch('pages/instructorAssessmentCheatDetection/cheat-detection-py/result.csv');
+              const data = await csv.text();
+              //Parsing
+              Papa.parse(data, {
+                header: true,
+                skipEmptyLines: true,
+                //dynamicTyping: true,
+                complete : function(results) {
+                  console.log(results);
+                  for (i = 0; i < results.data.length; i++) {
+                    overall_data.push(results.data[i].overall_prob);
+                  }
+                  console.log(overall_data);
+                }
+              });
+              //return { xs, ys };
+            }
+            </script>
+          </div>
+
+          <!-- Old Histogram 
           <div id="scoreHist" class="scoreHistogram"></div>
           <script>
             $(function() {
@@ -37,7 +112,7 @@
                 histogram("#scoreHist", data, xgrid, options);
             });
           </script>
-        </div>
+        </div> -->
 
         <div class="table-responsive">
           <table class="table table-sm table-hover">
