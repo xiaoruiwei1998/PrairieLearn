@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>2
+  <head>
     <%- include('../partials/head', {pageTitle: 'cheat_detection'}); %>
     <script src="<%= node_modules_asset_path('lodash/lodash.min.js') %>"></script>
     <script src="<%= node_modules_asset_path('d3/dist/d3.min.js') %>"></script>
@@ -33,13 +33,24 @@
             <button type="button" class="btn btn-sm btn-primary" id="uploadconfirm"> Upload CSV</button>
             <hr>
             <button type="button" class="btn btn-sm btn-primary" 
-              onclick="updateChart('overall_data')"> Overall Similarity </button>
+              onclick="updateChart('overall_prob')"> Overall Similarity </button>
+            <button type="button" class="btn btn-sm btn-primary" 
+              onclick="updateChart('rule1_prob')"> Time Similarity </button>
+            <button type="button" class="btn btn-sm btn-primary" 
+              onclick="updateChart('rule2_prob')"> Answer Similarity </button>
+            <button type="button" class="btn btn-sm btn-primary" 
+              onclick="updateChart('rule3_prob')"> Order Similarity </button>
           </div>
-          <div class="cd_chart" style="position: relative; height: 35vh; width: 70vw">
+          <div class="cd_chart" height= "400" width= "400">
             <canvas id="chart"></canvas>
           </div>
           <script>
-            const overall_data = [];
+            let overall_data = {
+              "0-0.1": 0, "0.1-0.2": 0, "0.2-0.3": 0, "0.3-0.4": 0, "0.4-0.5": 0, 
+              "0.5-0.6": 0, "0.6-0.7": 0, "0.7-0.8": 0, "0.8-0.9": 0, "0.9-1": 0 };
+            let time_data = {...overall_data};
+            let answer_data = {...overall_data};
+            let order_data = {...overall_data};
             let group_count = {
             "0-0.1":0, 
             "0.1-0.2":0, 
@@ -51,10 +62,50 @@
             "0.7-0.8":0,
             "0.8-0.9":0, 
             "0.9-1":0
-          };
-            const ys = [];
+            };
+           
             //const csv = await fetch('pages/instructorAssessmentCheatDetection/cheat-detection-py/result.csv');
             //const data = await csv.text();
+            function readWriteData(results, ruleData) {
+              let dict = {};
+              let score = null;
+              if (ruleData === 'overall_prob') { dict = overall_data; }
+              else if (ruleData === 'rule1_prob') { dict = time_data; }
+              else if (ruleData === 'rule2_prob') { dict = answer_data; }
+              else if (ruleData === 'rule3_prob') { dict = order_data; }
+              for (i = 0; i < results.data.length; i++) {
+                if (ruleData === 'overall_prob') { score = results.data[i].overall_prob; }
+                else if (ruleData === 'rule1_prob') { score = results.data[i].rule1_prob; }
+                else if (ruleData === 'rule2_prob') { score = results.data[i].rule2_prob; }
+                else if (ruleData === 'rule3_prob') { score = results.data[i].rule3_prob; }
+                if (score <= 0.1)
+                  dict["0-0.1"] += 1;
+                else if (0.1 < score <= 0.2)
+                  dict["0.1-0.2"] += 1;
+                else if (0.2 < score <= 0.3)
+                  dict["0.2-0.3"] += 1;
+                else if (0.3 < score <= 0.4)
+                  dict["0.3-0.4"] += 1;
+                else if (0.4 < score <= 0.5)
+                  dict["0.4-0.5"] += 1;
+                else if (0.5 < score <= 0.6)
+                  dict["0.5-0.6"] += 1;
+                else if (0.6 < score <= 0.7)
+                  dict["0.6-0.7"] += 1;
+                else if (0.7 < score <= 0.8)
+                  dict["0.7-0.8"] += 1;
+                else if (0.8 < score <= 0.9)
+                  dict["0.8-0.9"] += 1;
+                else
+                  dict["0.9-1"] += 1;
+                
+              }
+              if (ruleData === 'overall_prob') { overall_data = dict; }
+              else if (ruleData === 'rule1_prob') { time_data = dict; }
+              else if (ruleData === 'rule2_prob') { answer_data = dict; }
+              else if (ruleData === 'rule3_prob') { order_data = dict; }
+              
+            }
             const uploadcsv = document.getElementById('uploadconfirm')
               .addEventListener('click', () => {
                 //Parsing
@@ -62,44 +113,12 @@
                   download: true,
                   header: true,
                   skipEmptyLines: true,
-                  //dynamicTyping: true,
+                  
                   complete : function(results) {
-                    for (i = 0; i < results.data.length; i++) {
-                      if (results.data[i].overall_prob <= 0.1)
-                        group_count["0-0.1"] += 1;
-
-                      else if (0.1 < results.data[i].overall_prob <= 0.2)
-                        group_count["0.1-0.2"] += 1;
-
-                      else if (0.2 < results.data[i].overall_prob <= 0.3)
-                        group_count["0.2-0.3"] += 1;
-
-                      else if (0.3 < results.data[i].overall_prob <= 0.4)
-                        group_count["0.3-0.4"] += 1;
-
-                      else if (0.4 < results.data[i].overall_prob <= 0.5)
-                        group_count["0.4-0.5"] += 1;
-
-                      else if (0.5 < results.data[i].overall_prob <= 0.6)
-                        group_count["0.5-0.6"] += 1;
-  
-                      else if (0.6 < results.data[i].overall_prob <= 0.7)
-                        group_count["0.6-0.7"] += 1;
-
-                      else if (0.7 < results.data[i].overall_prob <= 0.8)
-                        group_count["0.7-0.8"] += 1;
-
-                      else if (0.8 < results.data[i].overall_prob <= 0.9)
-                        group_count["0.8-0.9"] += 1;
-
-                      else
-                        group_count["0.9-1"] += 1;
-
-                      overall_data.push(results.data[i].overall_prob);
-                    }
-                    console.log(overall_data);
-                    console.log(Object.keys(group_count).length);
-                    console.log(Object.values(group_count));
+                    readWriteData(results, 'overall_prob');
+                    readWriteData(results, 'rule1_prob', time_data);
+                    readWriteData(results, 'rule2_prob', answer_data);
+                    readWriteData(results, 'rule3_prob', order_data);
                     }
                 });
               });
@@ -141,12 +160,32 @@
               config
             );
             
-            function updateChart() {
-              
-                console.log(Object.values(group_count));
-                myChart.data.datasets[0].label = "Number of pairs within the bin";
-                myChart.data.datasets[0].data = Object.values(group_count);
-              
+            function updateChart(rule) {
+              myChart.data.datasets[0].label = "Number of pairs within the bin";
+              //set display data to data pertaining to rule
+              if (rule === 'overall_prob') {
+                for(const key in overall_data) {
+                group_count[key] = overall_data[key]
+                }
+              }
+              if (rule === 'rule1_prob') {
+                for(const key in time_data) {
+                group_count[key] = time_data[key]
+                }
+              }
+              if (rule === 'rule2_prob') {
+                for(const key in answer_data) {
+                group_count[key] = answer_data[key]
+                }
+              }
+              if (rule === 'rule3_prob') {
+                for(const key in order_data) {
+                group_count[key] = order_data[key]
+                }
+              }
+              console.log(Object.values(group_count));
+              myChart.data.datasets[0].data = Object.values(group_count);
+            
               myChart.update();
             };
           </script>
