@@ -31,23 +31,24 @@ router.get('/', function (req, res, next) {
       function (callback) {
         debug('query assessment_stats');
         // calling python script
-        var util = require("util");
-        var spawn = require("child_process").spawn;
-        var pythonProcess = spawn('python3',["pages/instructorAssessmentCheatDetection/cheat-detection-py/main.py", 
-                                              '-d', 'pages/instructorAssessmentCheatDetection/cheat-detection-py/fa20E2cleanedOutput',
-                                              '-o', 'pages/instructorAssessmentCheatDetection/cheat-detection-py',
-                                              '-w1', '0.4',
-                                              '-w2', '0.3',
-                                              '-w3', '0.3']);
-        util.log('readingin')
-        util.log(pythonProcess)
-        pythonProcess.stdout.on('data', function(data) {
-          util.log(data.toString('utf8'));
-        });
+        // var util = require("util");
+        // var spawn = require("child_process").spawn;
+        // var pythonProcess = spawn('python3',["pages/instructorAssessmentCheatDetection/cheat-detection-py/main.py", 
+        //                                       '-d', 'pages/instructorAssessmentCheatDetection/cheat-detection-py/fa20E2cleanedOutput',
+        //                                       '-o', 'pages/instructorAssessmentCheatDetection/cheat-detection-py',
+        //                                       '-w1', '0.4',
+        //                                       '-w2', '0.3',
+        //                                       '-w3', '0.3']);
+        // util.log('readingin')
+        // util.log(pythonProcess)
+        // pythonProcess.stdout.on('data', function(data) {
+        //   util.log(data.toString('utf8'));
+        // });
 
-        pythonProcess.stderr.on('data', function(data) {
-          console.error(`stderr: ${data}`);
-        });
+        // pythonProcess.stderr.on('data', function(data) {
+        //   console.error(`stderr: ${data}`);
+        // });
+        
         // from ruiwei
         var params = { assessment_id: res.locals.assessment.id };
         sqldb.queryOneRow(sql.assessment_stats, params, function (err, result) {
