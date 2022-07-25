@@ -51,7 +51,10 @@
             let time_data = {...overall_data};
             let answer_data = {...overall_data};
             let order_data = {...overall_data};
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
             let group_count = {
             "0-0.1":0, 
             "0.1-0.2":0, 
@@ -74,13 +77,19 @@
               else if (ruleData === 'rule1_prob') { dict = time_data; }
               else if (ruleData === 'rule2_prob') { dict = answer_data; }
               else if (ruleData === 'rule3_prob') { dict = order_data; }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
               for (i = 0; i < results.data.length; i++) {
                 if (ruleData === 'overall_prob') { score = results.data[i].overall_prob; }
                 else if (ruleData === 'rule1_prob') { score = results.data[i].rule1_prob; }
                 else if (ruleData === 'rule2_prob') { score = results.data[i].rule2_prob; }
                 else if (ruleData === 'rule3_prob') { score = results.data[i].rule3_prob; }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                 if (score <= 0.1)
                   dict["0-0.1"] += 1;
                 else if (0.1 < score <= 0.2)
