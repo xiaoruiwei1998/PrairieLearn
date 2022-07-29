@@ -45,11 +45,12 @@ class CheatingDetection(object):
         print("processing data")
         # Iterates thorough args (currently student files)
         for csv in self.student_files:
-            # print(csv)
+            if ".csv" not in csv:
+                continue
             student_df = self.csv_to_df(csv)
 
             # gets student email, (SHOULD WE GET: student name? or ID)
-            student = student_df.loc[0]['Random_Id']
+            student = student_df.loc[0]['auth_user_uid']
 
             # creates a Times obj inside MAP for every student
             if student not in self.map: #runtime?
@@ -91,20 +92,20 @@ class CheatingDetection(object):
             r2, r2_evidence = self.check_same_answer(student1_times.student_answer, student2_times.student_answer)
             r3, r3_evidence = self.check_same_order(student1_times.q_times, student2_times.q_times)
             r1_evidence, r2_evidence, r3_evidence = evidence_generator(r1_evidence, r2_evidence, r3_evidence, self.CHECK_TIME_time_epsilon)
-            if True:
-                if student1 not in self.cheat_pairs.keys():
-                    self.cheat_pairs[student1] = []
+            
+            if student1 not in self.cheat_pairs.keys():
+                self.cheat_pairs[student1] = []
                 row = {'student1': student1,
-                       'student2': student2, 
-                       'rule1_violations': r1_evidence, 
-                       'rule1_prob': r1, 
-                       'rule2_violation': r2_evidence, 
-                       'rule2_prob': r2, 
-                       'rule3_violation': r3_evidence, 
-                       'rule3_prob': r3, 
-                       'overall_prob': 0}
-                df = df.append(row, ignore_index=True)
-                self.cheat_pairs[student1].append(student2)
+                    'student2': student2, 
+                    'rule1_violations': r1_evidence, 
+                    'rule1_prob': r1, 
+                    'rule2_violation': r2_evidence, 
+                    'rule2_prob': r2, 
+                    'rule3_violation': r3_evidence, 
+                    'rule3_prob': r3,                        
+                    'overall_prob': 0}
+            df = df.append(row, ignore_index=True)
+            self.cheat_pairs[student1].append(student2)
                 
         # normalization
         df['rule1_prob'] = normalize_df(df['rule1_prob'])

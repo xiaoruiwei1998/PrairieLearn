@@ -1,6 +1,8 @@
 
 def normalize_df(df):
-    return (df-df.min())/(df.max()-df.min()) 
+    if df.max()-df.min()!=0:
+        return (df-df.min())/(df.max()-df.min()) 
+    return df
 
 def evidence_generator(e1, e2, e3, time_epsilon):
     """ Add more readable instructions to evidence data """

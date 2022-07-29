@@ -31,23 +31,39 @@ router.get('/', function (req, res, next) {
       function (callback) {
         debug('query assessment_stats');
         // calling python script
-        // var util = require("util");
-        // var spawn = require("child_process").spawn;
-        // var pythonProcess = spawn('python3',["pages/instructorAssessmentCheatDetection/cheat-detection-py/main.py", 
-        //                                       '-d', 'pages/instructorAssessmentCheatDetection/cheat-detection-py/fa20E2cleanedOutput',
-        //                                       '-o', 'pages/instructorAssessmentCheatDetection/cheat-detection-py',
-        //                                       '-w1', '0.4',
-        //                                       '-w2', '0.3',
-        //                                       '-w3', '0.3']);
-        // util.log('readingin')
-        // util.log(pythonProcess)
-        // pythonProcess.stdout.on('data', function(data) {
-        //   util.log(data.toString('utf8'));
-        // });
+        var util = require("util");
+        var spawn = require("child_process").spawn;
+        var psersonalAccessToken = "e653f2cf-4107-48cc-8162-24f57341cbab";
 
-        // pythonProcess.stderr.on('data', function(data) {
-        //   console.error(`stderr: ${data}`);
-        // });
+        // 1. pull data
+        // create folder to save log files
+        var fs = require('fs');
+        const logDataDir = 'pages/instructorAssessmentCheatDetection/cheat-detection-py/studentLog';
+        if (!fs.existsSync(logDataDir)) {
+          fs.mkdirSync(logDataDir, {recursive: true});
+        }
+        var pythonProcessPullData = spawn('python3',['tools/api_download.py',
+                                                    '-t', psersonalAccessToken,
+                                                    '-i', res.locals.course.id,
+                                                    '-a', res.locals.assessment.id,
+                                                    '-o', logDataDir,
+                                                    '-s', 'http://localhost:3000/pl/api/v1']);
+
+        // 2. convert json to csv
+        var pythonProcessConvertData = spawn('python3',['pages/instructorAssessmentCheatDetection/cheat-detection-py/json_to_csv.py',
+                                                    '-i', logDataDir,
+                                                    '-o', logDataDir]);
+
+        // 3. calculate the similarity values
+        var pythonProcessCalculate = spawn('python3',["pages/instructorAssessmentCheatDetection/cheat-detection-py/main.py", 
+                                              '-d', logDataDir,
+                                              '-o', 'pages/instructorAssessmentCheatDetection/cheat-detection-py',
+                                              '-w1', '0.4',
+                                              '-w2', '0.3',
+                                              '-w3', '0.3']);
+        
+        // 4. delete data files
+        // fs.rmdir(logDataDir);
         
         // from ruiwei
         var params = { assessment_id: res.locals.assessment.id };
