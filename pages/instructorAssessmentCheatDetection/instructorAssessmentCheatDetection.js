@@ -33,7 +33,7 @@ router.get('/', function (req, res, next) {
         // calling python script
         var util = require("util");
         var spawn = require("child_process").spawn;
-        var psersonalAccessToken = "e653f2cf-4107-48cc-8162-24f57341cbab";
+        var psersonalAccessToken = "234c3c9d-a00a-4184-b5be-ac2abd6eed56 ";
 
         // 1. pull data
         // create folder to save log files
