@@ -32,6 +32,12 @@
             <input type = "file" id = "uploadcsv">
             <button type="button" class="btn btn-sm btn-primary" id="uploadconfirm"> Upload CSV</button>
             <hr>
+            
+            <p class="lead text-left"> 
+              Personal Access Token: <input type="text" id="PAT">
+              <button type="submit" class="btn btn-primary" id="submitPersonalAccessToken">Submit</button>
+            </p>
+            
             <button type="button" class="btn btn-sm btn-primary" 
               onclick="updateChart('overall_prob')"> Overall Similarity </button>
             <button type="button" class="btn btn-sm btn-primary" 
@@ -188,6 +194,12 @@
             
               myChart.update();
             };
+
+            function setPersonalAccessToken(event) {
+              personalAccessToken = document.getElementById("PAT").value;
+              console.log(personalAccessToken);
+            }
+            document.getElementById("submitPersonalAccessToken").addEventListener("click", setPersonalAccessToken, false);
           </script>
         </div>
         <% } %>

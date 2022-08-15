@@ -23,9 +23,14 @@ const setFilenames = function (locals) {
   locals.cheatDetectionCsvFilename = prefix + 'cheat_detection.csv';
 };
 
+// var psersonalAccessToken = "234c3c9d-a00a-4184-b5be-ac2abd6eed56 ";
+const personalAccessToken = 'b400e6fc-b02a-46f0-b74d-f61e7e3ddc95';
+console.log("backend received PAT: ", personalAccessToken);
+
 router.get('/', function (req, res, next) {
   debug('GET /');
   setFilenames(res.locals);
+  console.log("res", res);
   async.series(
     [
       function (callback) {
@@ -33,7 +38,6 @@ router.get('/', function (req, res, next) {
         // calling python script
         var util = require("util");
         var spawn = require("child_process").spawn;
-        var psersonalAccessToken = "234c3c9d-a00a-4184-b5be-ac2abd6eed56 ";
 
         // 1. pull data
         // create folder to save log files
@@ -43,7 +47,7 @@ router.get('/', function (req, res, next) {
           fs.mkdirSync(logDataDir, {recursive: true});
         }
         var pythonProcessPullData = spawn('python3',['tools/api_download.py',
-                                                    '-t', psersonalAccessToken,
+                                                    '-t', personalAccessToken,
                                                     '-i', res.locals.course.id,
                                                     '-a', res.locals.assessment.id,
                                                     '-o', logDataDir,
