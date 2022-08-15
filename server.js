@@ -3,7 +3,6 @@
 const opentelemetry = require('@prairielearn/opentelemetry');
 
 const ERR = require('async-stacktrace');
-const util = require('util');
 const fs = require('fs');
 const path = require('path');
 const debug = require('debug')('prairielearn:' + path.basename(__filename, '.js'));
@@ -45,11 +44,13 @@ const serverJobs = require('./lib/server-jobs');
 const freeformServer = require('./question-servers/freeform.js');
 const cache = require('./lib/cache');
 const { LocalCache } = require('./lib/local-cache');
-const workers = require('./lib/workers');
+const codeCaller = require('./lib/code-caller');
 const assets = require('./lib/assets');
 const namedLocks = require('./lib/named-locks');
+const nodeMetrics = require('./lib/node-metrics');
+const { isEnterprise } = require('./lib/license');
 
-process.on('warning', (e) => console.warn(e)); // eslint-disable-line no-console
+process.on('warning', (e) => console.warn(e));
 
 // If there is only one argument, legacy it into the config option
 if (argv['_'].length === 1) {
@@ -66,7 +67,7 @@ if ('h' in argv || 'help' in argv) {
     --exit                              Run all the initialization and exit
 `;
 
-  console.log(msg); // eslint-disable-line no-console
+  console.log(msg);
   process.exit(0);
 }
 
@@ -422,6 +423,11 @@ module.exports.initExpress = function () {
   // app.use('/pl/downloadSEBConfig', require('./pages/studentSEBConfig/studentSEBConfig'));
   app.use(require('./middlewares/authn')); // authentication, set res.locals.authn_user
   app.use('/pl/api', require('./middlewares/authnToken')); // authn for the API, set res.locals.authn_user
+
+  if (isEnterprise()) {
+    app.use('/pl/prairietest/auth', require('./ee/auth/prairietest'));
+  }
+
   app.use(require('./middlewares/csrfToken')); // sets and checks res.locals.__csrf_token
   app.use(require('./middlewares/logRequest'));
 
@@ -1601,7 +1607,6 @@ module.exports.initExpress = function () {
   app.get('/pl/webhooks/ping', function (req, res, _next) {
     res.send('.');
   });
-  app.use('/pl/webhooks/grading', require('./webhooks/grading/grading'));
 
   //////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////
@@ -1734,7 +1739,7 @@ if (config.startServer) {
             (time, stack) => {
               const msg = `BLOCKED-AT: Blocked for ${time}ms`;
               logger.verbose(msg, { time, stack });
-              console.log(msg + '\n' + stack.join('\n')); // eslint-disable-line no-console
+              console.log(msg + '\n' + stack.join('\n'));
             },
             { threshold: config.blockedWarnThresholdMS }
           ); // threshold in milliseconds
@@ -1743,7 +1748,7 @@ if (config.startServer) {
             (time) => {
               const msg = `BLOCKED: Blocked for ${time}ms (set config.blockedAtWarnEnable for stack trace)`;
               logger.verbose(msg, { time });
-              console.log(msg); // eslint-disable-line no-console
+              console.log(msg);
             },
             { threshold: config.blockedWarnThresholdMS }
           ); // threshold in milliseconds
@@ -1812,14 +1817,17 @@ if (config.startServer) {
         logger.verbose('Successfully connected to database');
       },
       function (callback) {
-        if (!config.runMigrations) return callback(null);
+        // Using the `--migrate-and-exit` flag will override the value of
+        // `config.runMigrations`. This allows us to use the same config when
+        // running migrations as we do when we start the server.
+        if (!config.runMigrations && !argv['migrate-and-exit']) return callback(null);
         migrations.init(path.join(__dirname, 'migrations'), 'prairielearn', function (err) {
           if (ERR(err, callback)) return;
           callback(null);
         });
       },
       function (callback) {
-        if ('migrate-and-exit' in argv && argv['migrate-and-exit']) {
+        if (argv['migrate-and-exit']) {
           logger.info('option --migrate-and-exit passed, running DB setup and exiting');
           process.exit(0);
         } else {
@@ -1893,9 +1901,8 @@ if (config.startServer) {
         load.initEstimator('python_callback_waiting', 1);
         callback(null);
       },
-      function (callback) {
-        workers.init();
-        callback(null);
+      async () => {
+        await codeCaller.init();
       },
       async () => {
         logger.verbose('Starting server...');
@@ -1920,12 +1927,7 @@ if (config.startServer) {
           callback(null);
         });
       },
-      function (callback) {
-        util.callbackify(workspace.init)((err) => {
-          if (ERR(err, callback)) return;
-          callback(null);
-        });
-      },
+      async () => workspace.init(),
       function (callback) {
         serverJobs.init(function (err) {
           if (ERR(err, callback)) return;
@@ -1933,10 +1935,11 @@ if (config.startServer) {
         });
       },
       function (callback) {
-        freeformServer.init(function (err) {
-          if (ERR(err, callback)) return;
-          callback(null);
-        });
+        nodeMetrics.init();
+        callback(null);
+      },
+      async () => {
+        await freeformServer.init();
       },
     ],
     function (err, data) {

@@ -55,7 +55,11 @@ function getParamsForAssessment(assessmentInfoFile, questionIds) {
     number: assessment.number,
     title: assessment.title,
     multiple_instance: assessment.multipleInstance ? true : false,
-    shuffle_questions: assessment.shuffleQuestions ? true : false,
+    shuffle_questions:
+      (assessment.type === 'Exam' && assessment.shuffleQuestions === undefined) ||
+      assessment.shuffleQuestions
+        ? true
+        : false,
     allow_issue_reporting: allowIssueReporting,
     allow_real_time_grading: allowRealTimeGrading,
     require_honor_code: requireHonorCode,
@@ -63,6 +67,7 @@ function getParamsForAssessment(assessmentInfoFile, questionIds) {
     max_points: assessment.maxPoints,
     max_bonus_points: assessment.maxBonusPoints,
     set_name: assessment.set,
+    assessment_module_name: assessment.module,
     text: assessment.text,
     constant_question_value: !!_.get(assessment, 'constantQuestionValue', false),
     group_work: !!assessment.groupWork,
