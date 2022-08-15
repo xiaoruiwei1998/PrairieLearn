@@ -1,3 +1,0 @@
-@prairielearn/opentelemetry:build: cache hit, replaying output [2m68c1fa7f6f8208f3[0m
-[32m@prairielearn/opentelemetry:build: [0mwarning package.json: No license field
-[32m@prairielearn/opentelemetry:build: [0m$ tsc
