@@ -51,7 +51,7 @@
             "default": false
         },
         "shuffleQuestions": {
-            "description": "Whether the questions will be shuffled in the student view of an assessment (Homework only)",
+            "description": "Whether the questions will be shuffled in the student view of an assessment",
             "type": "boolean",
             "default": false
         },
@@ -143,6 +143,10 @@
             "description": "Minimum amount of time (in minutes) between graded submissions to the same question.",
             "type": "number",
             "minimum": 0
+        },
+        "module": {
+            "description": "Module that this assessment belongs to, as defined in infoCourse.json.",
+            "type": "string"
         }
     },
     "definitions": {
