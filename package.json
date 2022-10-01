@@ -162,7 +162,7 @@
         "eslint": "^8.18.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-import": "^2.26.0",
-        "fast-glob": "^3.2.11",
+        "fast-glob": "^3.2.12",
         "htmlhint": "^1.1.4",
         "jest": "^27.5.1",
         "jsdoc": "^3.6.10",
