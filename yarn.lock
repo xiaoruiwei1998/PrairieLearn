@@ -1056,12 +1056,13 @@
     "@types/pg" "8.6.1"
     "@types/pg-pool" "2.0.3"
 
-"@opentelemetry/instrumentation-redis@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/instrumentation-redis/-/instrumentation-redis-0.32.0.tgz#c361fb8b0eac448927b31b6f42fa5a5c84bfb79d"
-  integrity sha512-KaZnYhz8dZ9gHkvrBo2U7bp/HABM2JXd3i6e8cUP8MyNA8x5P+EUbeSzzBMe6bAZH35S60dAQbBAhRji3ZlPRw==
+"@opentelemetry/instrumentation-redis@^0.34.1":
+  version "0.34.1"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/instrumentation-redis/-/instrumentation-redis-0.34.1.tgz#3758ad1ceb1e6cdcc912edbf8a6eef76bea94d88"
+  integrity sha512-r99/Qeliyo5Xl8zYDqDthj21HIoCO7IAcVg6pv4CEK/6S33UQ5lbFAqUjZ6jtb7S3PrjFurODgSXBTRPdvY01g==
   dependencies:
-    "@opentelemetry/instrumentation" "^0.29.2"
+    "@opentelemetry/instrumentation" "^0.34.0"
+    "@opentelemetry/redis-common" "^0.34.0"
     "@opentelemetry/semantic-conventions" "^1.0.0"
     "@types/redis" "2.8.31"
 
@@ -1071,6 +1072,15 @@
   integrity sha512-LXx5V0ONNATQFCE8C5uqnxWSm4rcXLssdLHdXjtGdxRmURqj/JO8jYefqXCD0LzsqEQ6yxOx2GZ0dgXvhBVdTw==
   dependencies:
     "@opentelemetry/api-metrics" "0.29.2"
+    require-in-the-middle "^5.0.3"
+    semver "^7.3.2"
+    shimmer "^1.2.1"
+
+"@opentelemetry/instrumentation@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/instrumentation/-/instrumentation-0.34.0.tgz#bae86da46ea4466594689975cd10f0c3720b4071"
+  integrity sha512-VET/bOh4StOQV4vf1sAvn2JD67BhW2vPZ/ynl2gHXyafme2yB8Hs9+tr1TLzFwNGo7jwMFviFQkZjCYxMuK0AA==
+  dependencies:
     require-in-the-middle "^5.0.3"
     semver "^7.3.2"
     shimmer "^1.2.1"
@@ -1093,6 +1103,11 @@
   integrity sha512-H6swQcjZ8aMCS5caZaEBaadfn205IqLlB3ZyY+tCWDf5YPwJgPpjw3qgYgWulHVSEzK7VQTle/mZG7u9MAe6Pw==
   dependencies:
     "@opentelemetry/core" "1.3.1"
+
+"@opentelemetry/redis-common@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/redis-common/-/redis-common-0.34.0.tgz#91454ead61b53dbd1a5e1acf7454e7175ab9ed56"
+  integrity sha512-Y+WXnW2Z+ywqzC8l2Hv6FC7surPFYITLgjVTvErnycEiAZpA3JtboeHGZ66Bi7LJKPFCkWaQKnQkpG3RgohxMg==
 
 "@opentelemetry/resource-detector-aws@^1.1.1", "@opentelemetry/resource-detector-aws@~1.1.0":
   version "1.1.1"
