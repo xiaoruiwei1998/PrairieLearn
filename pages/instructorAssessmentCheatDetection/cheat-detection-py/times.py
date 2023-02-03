@@ -13,14 +13,13 @@ class Times(object):
         # TO DO: IF QUESTION IN ordered dict, do nothing. THEN REVERSE DICT AT THE END
         # Check that start and end times are valid (start < end)
         # When overriding, make sure old start/end < new start/end
-        old_dates = None
         if question in self.q_times:
             # Checks if new start/end time are after the old ones
             if self.q_times[question][1] > start_time:
                 return
             self.q_times.pop(question)
             self.student_question.remove(s_question) #removing is linear time right now (unideal)
-        if start_time <= end_time:        
+        if start_time <= end_time:      
             self.q_times[question] = (start_time, end_time)  # use tuple
         self.student_answer[question] = response
         self.student_question.append(s_question)
