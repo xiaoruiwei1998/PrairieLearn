@@ -3718,7 +3718,7 @@ __metadata:
     folder-hash: ^4.0.4
     fs-extra: ^11.1.0
     generic-pool: ^3.9.0
-    googleapis: ^110.0.0
+    googleapis: ^111.0.0
     he: ^1.2.0
     highlight.js: ^11.7.0
     htmlhint: ^1.1.4
@@ -8066,13 +8066,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^110.0.0":
-  version: 110.0.0
-  resolution: "googleapis@npm:110.0.0"
+"googleapis@npm:^111.0.0":
+  version: 111.0.0
+  resolution: "googleapis@npm:111.0.0"
   dependencies:
     google-auth-library: ^8.0.2
     googleapis-common: ^6.0.0
-  checksum: 4cfa66d007ecca350e9df240a476792654385e878c76d3ca755a5df3898c97cd3256134b788c4765513bca393062f9e033f746245eba45ae189769918d1ccd98
+  checksum: d50876b146018704897c53656f7646fcf0a59085186d67509f60b153f324fa614b67e7cd92db9308ca473cc9ca744301097a9c50e671c448b7635969e6fbaf21
   languageName: node
   linkType: hard
 
