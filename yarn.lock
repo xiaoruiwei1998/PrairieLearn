@@ -2651,16 +2651,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/resource-detector-aws@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@opentelemetry/resource-detector-aws@npm:1.2.1"
+"@opentelemetry/resource-detector-aws@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@opentelemetry/resource-detector-aws@npm:1.2.2"
   dependencies:
     "@opentelemetry/core": ^1.0.0
     "@opentelemetry/resources": ^1.0.0
     "@opentelemetry/semantic-conventions": ^1.0.0
   peerDependencies:
     "@opentelemetry/api": ^1.0.0
-  checksum: 4dc54782ed4a7c1b9b05ec85aed9fb2bec4e39d8821e2b999cc5b2b31966d025221a1f414d39356fa7b046625c49aeec1c6a1703c9a3757bff028240d203a1de
+  checksum: a27a6932a762749fe6c3675833c8cfcd38350265da7891c666b984c1452d6c548afea36b6b8c7a9e3c63e7f5f2eb5af0bd40333ec62377d1bdcc95d02e8d8fe7
   languageName: node
   linkType: hard
 
@@ -2826,7 +2826,7 @@ __metadata:
     "@opentelemetry/instrumentation-http": ^0.35.1
     "@opentelemetry/instrumentation-pg": ^0.34.0
     "@opentelemetry/instrumentation-redis": ^0.34.1
-    "@opentelemetry/resource-detector-aws": ^1.2.1
+    "@opentelemetry/resource-detector-aws": ^1.2.2
     "@opentelemetry/resources": ^1.9.1
     "@opentelemetry/sdk-node": ^0.35.1
     "@opentelemetry/sdk-trace-base": ^1.9.1
