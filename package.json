@@ -81,7 +81,7 @@
         "json-stringify-safe": "^5.0.1",
         "klaw": "^4.1.0",
         "lodash": "^4.17.21",
-        "logform": "^2.4.2",
+        "logform": "^2.5.1",
         "loopbench": "^2.0.0",
         "lru-cache": "^7.14.1",
         "mathjax": "^3.2.2",
