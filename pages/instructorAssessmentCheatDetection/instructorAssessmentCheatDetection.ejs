@@ -21,6 +21,7 @@
     </script>
     <%- include('../partials/navbar'); %>
     <div id="content" class="container-fluid">
+
       <%- include('../partials/assessmentSyncErrorsAndWarnings'); %>
 
 
@@ -225,6 +226,7 @@
 
             // append rows
             for (let i=0; i<5; i++) {
+              console.log(window.location.href);
               let tr = $("<tr role=\"row\" class=\"even\"></tr>");
               tr.append($("<td>"+(i+1)+"</td>"));
               tr.append($("<td>"+"100%"+"</td>"));

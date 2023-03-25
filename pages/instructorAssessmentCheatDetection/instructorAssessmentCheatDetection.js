@@ -35,75 +35,75 @@ router.get('/', function (req, res, next) {
     [
       // function (callback) {
       //   debug('cheat-detection backend');
-//         // calling python script
-//         var util = require("util");
-//         var spawn = require("child_process").spawn;
+      //   // calling python script
+      //   var util = require("util");
+      //   var spawn = require("child_process").spawn;
 
-//         1. pull data
-//         create folder to save log files
-//         var fs = require('fs');
-//         const logDataDir = 'pages/instructorAssessmentCheatDetection/cheat-detection-py/studentLog';
-//         if (!fs.existsSync(logDataDir)) {
-//           fs.mkdirSync(logDataDir, {recursive: true});
-//         }
-//         var pythonProcessPullData = spawn('python3',['tools/api_download.py',
-//                                                     '-t', personalAccessToken,
-//                                                     '-i', res.locals.course.id,
-//                                                     '-a', res.locals.assessment.id,
-//                                                     '-o', logDataDir,
-//                                                     '-s', 'http://localhost:3000/pl/api/v1']);
+      //   // 1. pull data
+      //   // create folder to save log files
+      //   var fs = require('fs');
+      //   const logDataDir = 'pages/instructorAssessmentCheatDetection/cheat-detection-py/studentLog';
+      //   if (!fs.existsSync(logDataDir)) {
+      //     fs.mkdirSync(logDataDir, {recursive: true});
+      //   }
+      //   var pythonProcessPullData = spawn('python3',['tools/api_download.py',
+      //                                               '-t', personalAccessToken,
+      //                                               '-i', res.locals.course.id,
+      //                                               '-a', res.locals.assessment.id,
+      //                                               '-o', logDataDir,
+      //                                               '-s', 'http://localhost:3000/pl/api/v1']);
 
-//         // 2. convert json to csv
-//         var pythonProcessConvertData = spawn('python3',['pages/instructorAssessmentCheatDetection/cheat-detection-py/json_to_csv.py',
-//                                                     '-i', logDataDir,
-//                                                     '-o', logDataDir]);
+      //   // 2. convert json to csv
+      //   var pythonProcessConvertData = spawn('python3',['pages/instructorAssessmentCheatDetection/cheat-detection-py/json_to_csv.py',
+      //                                               '-i', logDataDir,
+      //                                               '-o', logDataDir]);
 
-//         // 3. calculate the similarity values
-//         var pythonProcessCalculate = spawn('python3',["pages/instructorAssessmentCheatDetection/cheat-detection-py/main.py", 
-//                                               '-d', logDataDir,
-//                                               '-o', 'pages/instructorAssessmentCheatDetection/cheat-detection-py',
-//                                               '-w1', '0.4',
-//                                               '-w2', '0.3',
-//                                               '-w3', '0.3']);
+      //   // 3. calculate the similarity values
+      //   var pythonProcessCalculate = spawn('python3',["pages/instructorAssessmentCheatDetection/cheat-detection-py/main.py", 
+      //                                         '-d', logDataDir,
+      //                                         '-o', 'pages/instructorAssessmentCheatDetection/cheat-detection-py',
+      //                                         '-w1', '0.4',
+      //                                         '-w2', '0.3',
+      //                                         '-w3', '0.3']);
         
-//         4. delete data files
-//         fs.rmdir(logDataDir);
+      //   // 4. delete data files
+      //   fs.rmdir(logDataDir);
         
         
-//         var params = { assessment_id: res.locals.assessment.id };
-//         sqldb.queryOneRow(sql.assessment_stats, params, function (err, result) {
-//           if (ERR(err, callback)) return;
-//           res.locals.assessment_stat = result.rows[0];
-//           callback(null);
-//         });
-//       },
-//       function (callback) {
-//         debug('query assessment_duration_stats');
-//         // FIXME: change to assessment_instance_duration_stats and show all instances
-//         var params = { assessment_id: res.locals.assessment.id };
-//         sqldb.queryOneRow(sql.assessment_duration_stats, params, function (err, result) {
-//           if (ERR(err, callback)) return;
-//           res.locals.duration_stat = result.rows[0];
-//           callback(null);
-//         });
-//       },
-//       function (callback) {
-//         debug('query assessment_score_histogram_by_date');
-//         var params = { assessment_id: res.locals.assessment.id };
-//         sqldb.query(sql.assessment_score_histogram_by_date, params, function (err, result) {
-//           if (ERR(err, next)) return;
-//           res.locals.assessment_score_histogram_by_date = result.rows;
-//           callback(null);
-//         });
-//       },
-//       function (callback) {
-//         debug('query user_scores');
-//         var params = { assessment_id: res.locals.assessment.id };
-//         sqldb.query(sql.user_scores, params, function (err, result) {
-//           if (ERR(err, callback)) return;
-//           res.locals.user_scores = result.rows;
-//           callback(null);
-//         });
+      //   var params = { assessment_id: res.locals.assessment.id };
+      //   sqldb.queryOneRow(sql.assessment_stats, params, function (err, result) {
+      //     if (ERR(err, callback)) return;
+      //     res.locals.assessment_stat = result.rows[0];
+      //     callback(null);
+      //   });
+      // },
+      // function (callback) {
+      //   debug('query assessment_duration_stats');
+      //   // FIXME: change to assessment_instance_duration_stats and show all instances
+      //   var params = { assessment_id: res.locals.assessment.id };
+      //   sqldb.queryOneRow(sql.assessment_duration_stats, params, function (err, result) {
+      //     if (ERR(err, callback)) return;
+      //     res.locals.duration_stat = result.rows[0];
+      //     callback(null);
+      //   });
+      // },
+      // function (callback) {
+      //   debug('query assessment_score_histogram_by_date');
+      //   var params = { assessment_id: res.locals.assessment.id };
+      //   sqldb.query(sql.assessment_score_histogram_by_date, params, function (err, result) {
+      //     if (ERR(err, next)) return;
+      //     res.locals.assessment_score_histogram_by_date = result.rows;
+      //     callback(null);
+      //   });
+      // },
+      // function (callback) {
+      //   debug('query user_scores');
+      //   var params = { assessment_id: res.locals.assessment.id };
+      //   sqldb.query(sql.user_scores, params, function (err, result) {
+      //     if (ERR(err, callback)) return;
+      //     res.locals.user_scores = result.rows;
+      //     callback(null);
+      //   });
       // },
     ],
     function (err) {
