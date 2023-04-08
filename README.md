@@ -1,9 +1,19 @@
-# PrairieLearn
+# Administrator queries
 
-PrairieLearn is an online problem-driven learning system for creating homeworks and tests. It allows questions to be written using arbitrary HTML, JavaScript, and Python, thus enabling very powerful questions that can randomize and autograde themselves, and can access client- and server-side libraries to handle tasks such as graphical drawing, symbolic algebra, and student code compilation and execution.
+Each query must have two files:
 
-[![GitHub Actions build status](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/main.yml/badge.svg)](https://github.com/PrairieLearn/PrairieLearn/actions/workflows/main.yml)
+- A JSON file in the [`adminQuery` JSON Schema](../schemas/schemas/adminQuery.json).
+- A SQL file with a query that returns a table, and potentially also performs an INSERT, UPDATE, or other action.
 
-Documentation: [https://prairielearn.readthedocs.io/](https://prairielearn.readthedocs.io/)
+To render columns as links, return column pairs like:
 
-Paid hosting and support: [https://www.prairielearn.com/](https://www.prairielearn.com/)
+- `course_id`/`course` - If these are both present, the `course_id` is not displayed but is used to link the `course`. The `course` column should be `pl_courses.short_name AS course`.
+- `course_instance_id`/`course_instance` - The `course_instance` should be `course_instances.short_name AS course_instance`.
+- `assessment_id`/`assessment` - The `assessment` should be `aset.abbreviation || a.number || ': ' || a.title AS assessment` or just `aset.abbreviation || a.number AS assessment`.
+
+To change the sort order for column with name `COL`, return another column with name `_sortval_COL`.
+
+Dates and intervals should be rendered with:
+
+- `format_date_full_compact(my_date, config_select('display_timezone')) AS my_date` - This will automatically sort correctly.
+- `format_interval(my_interval) AS my_interval` - This should be accompanied by `DATE_PART('epoch', my_interval) AS _sortval_my_interval` for sorting.
